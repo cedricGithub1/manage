@@ -1,6 +1,6 @@
 <template>
   <section>
-      <div class="title">活动名称：说场比赛</div>
+      <div class="title">活动名称：---</div>
       <div class="header">
         <div>
           <span>请输入编号： </span>
@@ -43,52 +43,14 @@
         :page-size="100"
         :total="998">
       </el-pagination>
-      <el-dialog title="新建活动" width='40%' :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="活动名称：" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off" placeholder="请输入活动名称"></el-input>
-          </el-form-item>
-          <el-form-item label="活动名称：" :label-width="formLabelWidth">
-            <el-date-picker
-              v-model="form.value"
-              type="datetimerange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
-            </el-date-picker>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="sure()">确 定</el-button>
-        </div>
-      </el-dialog>
   </section>
 </template>
 <script>
  export default {
     data() {
       return {
-        form: {},
-        dialogFormVisible: false,
-        input: '',
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+        input:'',
+        tableData: [],
         formLabelWidth: '120px'
       }
     },

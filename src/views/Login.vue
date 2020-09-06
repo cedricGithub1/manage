@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui';
 import bus from '../bus/bus.js'
 export default {
   name: 'Login',
@@ -37,8 +38,8 @@ export default {
     return {
       showLoading: false,
       ruleForm: {
-        userName: 'admin',
-        passWord: 'admin'
+        userName: '',
+        passWord: ''
       },
       rules: {
         userName: [
@@ -57,7 +58,13 @@ export default {
         if (valid) {
           this.showLoading = true
           // 请求接口判断登录信息
-          this.$router.push('/actManage')
+          if (this.ruleForm.userName == 'root' && this.ruleForm.passWord == '111111') {
+            this.$router.push('/actManage')
+          } else {
+            Message.error({
+              methods: '登录名或密码错误'
+            })
+          }
         } else {
           return false
         }
