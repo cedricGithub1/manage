@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import actManage from '../views/actManage/index.vue'
 import voteView from '../views/voteManage/index.vue'
+import dictManage from '../views/dictManage/index.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,12 @@ const routes = [{
         name: '活动设置',
         path: '/actManage',
         component: actManage,
+        show: true
+      },
+      {
+        name: '字典设置',
+        path: '/AdictManage',
+        component: dictManage,
         show: true
       },
       {

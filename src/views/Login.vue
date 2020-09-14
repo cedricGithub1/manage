@@ -62,7 +62,7 @@ export default {
             this.$router.push('/actManage')
           } else {
             Message.error({
-              methods: '登录名或密码错误'
+              message: '登录名或密码错误'
             })
           }
         } else {

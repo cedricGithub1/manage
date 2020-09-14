@@ -17,11 +17,11 @@
         </el-table-column>
         <el-table-column
           prop="tpCount"
-          label="参与人数">
+          label="总投票数">
         </el-table-column>
         <el-table-column
           prop="tpUnionCode"
-          label="编码">
+          label="查询编码">
         </el-table-column>
         <el-table-column
           prop="tpQueryFlag"
@@ -45,6 +45,19 @@
           :formatter="tpEndTime">
         </el-table-column>
         <el-table-column
+          label="是否可查">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.tpQueryFlag"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              :active-value="1"
+              :inactive-value="0"
+              @change='changeVal(scope.row)'>
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="操作">
           <template slot-scope="scope">
             <el-button type="danger" size="small" @click="delrow(scope.row)">删除</el-button>
@@ -63,11 +76,11 @@
           <el-form-item label="活动名称：" :label-width="formLabelWidth">
             <el-input v-model="form.tpProjectName" autocomplete="off" placeholder="请输入活动名称"></el-input>
           </el-form-item>
-          <el-form-item label="参与人数：" :label-width="formLabelWidth">
+          <el-form-item label="总投票数：" :label-width="formLabelWidth">
             <el-input v-model="form.tpCount" autocomplete="off" type="number" placeholder="请输入参入人数"></el-input>
           </el-form-item>
-          <el-form-item label="编码：" :label-width="formLabelWidth">
-            <el-input v-model="form.tpUnionCode" autocomplete="off" placeholder="请输入编码"></el-input>
+          <el-form-item label="查询编码：" :label-width="formLabelWidth">
+            <el-input v-model="form.tpUnionCode" autocomplete="off" placeholder="请输入查询编码"></el-input>
           </el-form-item>
           <el-form-item label="是否可查询：" :label-width="formLabelWidth">
             <el-switch
@@ -79,9 +92,9 @@
           <el-form-item label="参与人姓名: " :label-width="formLabelWidth">
             <el-input v-model="form.tpName" autocomplete="off" placeholder="请输入姓名"></el-input>
           </el-form-item>
-          <el-form-item label="版本号：" :label-width="formLabelWidth">
+          <!-- <el-form-item label="版本号：" :label-width="formLabelWidth">
             <el-input v-model="form.tpVersion" autocomplete="off" placeholder="请输入版本号"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="活动名称：" :label-width="formLabelWidth">
             <el-date-picker
               v-model="value"
@@ -137,6 +150,17 @@ import { async } from 'q';
       }
     },
     methods: {
+      changeVal(row) {
+        this.axios.post('/api/updateItem', {
+          'tpId': row.tpId,
+          'tpQueryFlag': row.tpQueryFlag
+        }).then(res => {
+          this.listGet()
+          Message.success({
+            message: '修改成功'
+          })
+        })
+      },
       urlget (file) {
         return new Promise((resolve, reject) => {
           this.$nextTick(() => {
@@ -181,18 +205,19 @@ import { async } from 'q';
         this.form.tpEndTime = this.value[1]
         this.tpQueryFlag ? this.form.tpQueryFlag = 1 : this.form.tpQueryFlag = 0
         console.log(this.form)
-        if(!(this.form.tpProjectName&&this.form.tpCount&&this.form.tpStartTime&&this.form.tpEndTime&&this.form.tpUnionCode&&this.form.tpQueryFlag&&this.form.tpVersion&&this.form.tpName)) {
+        this.form.tpVersion = '1.0.1'
+        if(!(this.form.tpProjectName&&this.form.tpCount&&this.form.tpStartTime&&this.form.tpEndTime&&this.form.tpUnionCode&&this.form.tpVersion&&this.form.tpName)) {
           Message.error({
             message: '请输入所有值'
           })
           return
         }
-        if (this.fileList.length <=0) {
-          Message.error({
-            message: '请选择文件'
-          })
-          return
-        }
+        // if (this.fileList.length <=0) {
+        //   Message.error({
+        //     message: '请选择文件'
+        //   })
+        //   return
+        // }
         this.axios.post('/api/addItem',{
           ...this.form
         }).then(res => {
@@ -206,9 +231,6 @@ import { async } from 'q';
           this.$refs.upload.submit()
           this.listGet()
         })
-      },
-      upload() {
-
       },
       listGet() {
         this.axios.post('/api/queryItem',{
