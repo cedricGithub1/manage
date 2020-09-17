@@ -173,10 +173,10 @@ import { async } from 'q';
         return row.tpQueryFlag == 1 ? '可查询':'不可查询'
       },
       tpStartTime(row,val) {
-        return this.moment(row.tpStartTime).format('YYYY-MM-DD hh:mm:ss')
+        return this.moment(row.tpStartTime).format('YYYY-MM-DD HH:mm:ss')
       },
       tpEndTime(row) {
-        return this.moment(row.tpEndTime).format('YYYY-MM-DD hh:mm:ss')
+        return this.moment(row.tpEndTime).format('YYYY-MM-DD HH:mm:ss')
       },
       // submitUpload() {
       //   this.$refs.upload.submit();
