@@ -77,7 +77,10 @@
             <el-input v-model="form.tpProjectName" autocomplete="off" placeholder="请输入活动名称"></el-input>
           </el-form-item>
           <el-form-item label="总投票数：" :label-width="formLabelWidth">
-            <el-input v-model="form.tpCount" autocomplete="off" type="number" placeholder="请输入参入人数"></el-input>
+            <el-input v-model="form.tpCount" autocomplete="off" type="number"  min='0' placeholder="请输入参入人数"></el-input>
+          </el-form-item>          
+          <el-form-item label="可查询次数：" :label-width="formLabelWidth">
+            <el-input v-model="form.tpQueryCount" autocomplete="off" type="number" min='0' placeholder="请输入可查询次数"></el-input>
           </el-form-item>
           <el-form-item label="查询编码：" :label-width="formLabelWidth">
             <el-input v-model="form.tpUnionCode" autocomplete="off" placeholder="请输入查询编码"></el-input>

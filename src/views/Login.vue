@@ -58,7 +58,7 @@ export default {
         if (valid) {
           this.showLoading = true
           // 请求接口判断登录信息
-          if (this.ruleForm.userName == 'root' && this.ruleForm.passWord == '111111') {
+          if (this.ruleForm.userName == 'admin' && this.ruleForm.passWord == 'xinghong123') {
             this.$router.push('/actManage')
           } else {
             Message.error({

@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import actManage from '../views/actManage/index.vue'
 import voteView from '../views/voteManage/index.vue'
 import dictManage from '../views/dictManage/index.vue'
+import upImage from '../views/upImage/index.vue'
 
 Vue.use(VueRouter)
 
@@ -36,7 +37,13 @@ const routes = [{
         path: '/voteView',
         component: voteView,
         show: false
-      }
+      },
+      {
+        name: '上传背景图',
+        path: '/upImage',
+        component: upImage,
+        show: true
+      },
     ]
   }
 ]

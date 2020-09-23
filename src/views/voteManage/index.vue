@@ -1,16 +1,18 @@
 <template>
   <section>
-      <div class="title"  v-if="tpProjectName">活动名称：{{tpProjectName}}</div>
-      <div class="header" >
-        <div>
-          <span>请输入编号： </span>
-          <el-input
-            placeholder="请输入编号"
-            v-model="key"
-            clearable>
-          </el-input>
+      <div class="top" :style="{backgroundImage: `url(${imgurl})`}">
+        <div class="title"  v-if="tpProjectName">{{tpProjectName}}</div>
+        <div class="header" >
+          <div>
+            <span>请输入查询编号： </span>
+            <el-input
+              placeholder="请输入编号"
+              v-model="key"
+              clearable>
+            </el-input>
+          </div>
+          <el-button type="primary" size="normal" @click="query">查询</el-button>
         </div>
-        <el-button type="primary" size="normal" @click="query">查询</el-button>
       </div>
       <el-table
         v-if="tableData.length  > 0"
@@ -53,18 +55,31 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        v-if="tableData.length  > 0"
-        background
-        layout="total,prev, pager, next"
-        :page-size="pageSize"
-        :total="total"
-        @current-change='currentChange'>
-      </el-pagination>
+      <div class="bottom"  v-if="tableData.length  > 0">
+        <span>共{{total}}条成功记录</span>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="pageSize"
+          :total="total"
+          @current-change='currentChange'>
+        </el-pagination>
+      </div>
+      <el-dialog
+        title="查询成功！请勿泄露！"
+        :visible.sync="dialogVisible"
+        width="30%">
+        <span>{{messages}}</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
   </section>
 </template>
 <script>
 import { Message } from 'element-ui';
+import { constants } from 'zlib';
  export default {
     data() {
       return {
@@ -76,7 +91,10 @@ import { Message } from 'element-ui';
         total: 0,
         pageSize: 10,
         tpProjectName: '',
-        titleStyle: 'margin-top:100px'
+        titleStyle: 'margin-top:100px',
+        dialogVisible: false,
+        messages: '',
+        imgurl: ''
       }
     },
     methods: {
@@ -91,9 +109,20 @@ import { Message } from 'element-ui';
         this.dialogFormVisible = true
       },
       search(row) {
-        this.$alert(row.tpPhone +'---'+row.tpAnwer, '请不要泄露！！！', {
-          confirmButtonText: '确定'
-        });
+        this.axios.post('/show/query/anwer', {
+          tpShowId: row.tpShowId,
+          tpProjectId: row.tpProjectId,
+        }).then(res => {
+          console.log(res)
+          if(res.data.code === "000000"){
+            this.dialogVisible = true
+            this.messages = res.data.data.tpPhone +'---'+res.data.data.tpAnwer
+          } else {
+            Message.error({
+              message: res.data.msg
+            })
+          }
+        })
       },
       query(){
         this.axios.post('/api/query',{
@@ -135,19 +164,42 @@ import { Message } from 'element-ui';
           
         })
       },
+      imgGet() {
+        this.axios.post('/background/query',{
+          o: this.$route.query.type
+        }).then(res => {
+          console.log(res)
+          this.imgurl = res.data.data.list[0].tUrl
+        })
+      },
       currentChange(val) {
         this.pageNum = val
         this.listGet()
       }
+    },
+    created() {
+      this.imgGet()
     }
   }
 </script>
 <style lang="scss" scoped>
+  .top{
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
   .title{
     text-align: center;
     font-size: 30px;
     font-weight: 600;
     margin-bottom: 30px;
+    color: #fff;
   }
   .header{
     height: 40px;
@@ -161,6 +213,24 @@ import { Message } from 'element-ui';
       width: 200px;
       margin-right: 20px;
     }
+  }
+  .bottom{
+    text-align: center;
+    overflow: hidden;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span{
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
+  .el-pagination{
+    float: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
   }
 </style>
 
