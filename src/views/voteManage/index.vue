@@ -178,7 +178,9 @@ import { constants } from 'zlib';
       }
     },
     created() {
-      this.imgGet()
+      if (this.$route.query.type) {
+        this.imgGet()
+      }
     }
   }
 </script>
