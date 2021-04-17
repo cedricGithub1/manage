@@ -48,12 +48,12 @@
           prop="tpPhoneType"
           label="手机型号">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="查询密码">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="search(scope.row)">查询密码</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <div class="bottom"  v-if="tableData.length  > 0">
         <span>共{{total}}条成功记录</span>
